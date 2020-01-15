@@ -12,6 +12,7 @@ import java.io.IOException;
 public class PlayerConnect implements Listener {
 
     private Karma karma;
+    ChangeKarma changeKarma = new ChangeKarma();
 
     public PlayerConnect(Karma karma) {
         this.karma = karma;
@@ -29,12 +30,14 @@ public class PlayerConnect implements Listener {
                 file.createNewFile();
                 YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
                 configuration.set("name", player.getName());
-                configuration.set("karma", new Integer(karma.getConfig().getInt("karma.default-karma")));
+                configuration.set("karma", karma.getConfig().getInt("karma.default-karma"));
                 configuration.save(file);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
             System.out.println("[Karma] Create new user file " + file + ".");
+            changeKarma.checkKarmaLimit(player);
         }
     }
 
